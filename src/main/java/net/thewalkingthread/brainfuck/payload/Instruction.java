@@ -11,7 +11,7 @@ public class Instruction implements Comparable<Instruction>{
     private Type type;
     private Instruction next;
     private Instruction jump;
-    public Integer num;
+    private Integer num;
 
     public Instruction(char c, int num) throws InvalidInstructionException {
         this.num = num;
@@ -26,7 +26,7 @@ public class Instruction implements Comparable<Instruction>{
             case ']': type = Type.LOOP_CLOSE; break;
             case '.': type = Type.PUT; break;
             case ',': type = Type.GET; break;
-            default: throw new InvalidInstructionException();
+            default: throw new InvalidInstructionException(num);
         }
     }
 
@@ -48,6 +48,10 @@ public class Instruction implements Comparable<Instruction>{
 
     public Type getType() {
         return type;
+    }
+
+    public Integer getNum() {
+        return num;
     }
 
     @Override

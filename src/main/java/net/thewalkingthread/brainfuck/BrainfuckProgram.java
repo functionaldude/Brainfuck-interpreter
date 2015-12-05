@@ -53,7 +53,7 @@ public class BrainfuckProgram {
                     break;
                 case PTR_DEC:
                     if (heap_ptr == 0)
-                        throw new PointerUnderflowException();
+                        throw new PointerUnderflowException(iter.getNum());
                     else
                         heap_ptr--;
                     break;
@@ -84,8 +84,8 @@ public class BrainfuckProgram {
     private void parse(String input) throws InvalidInstructionException, LoopConsistencyException {
         Instruction prev = null;
         Stack<Instruction> loop_stack = new Stack<>();
-        for(int char_counter = 0; char_counter < input.length(); ++char_counter){
-            Instruction current = new Instruction(input.charAt(char_counter), char_counter);
+        for(int inst_counter = 0; inst_counter < input.length(); ++inst_counter){
+            Instruction current = new Instruction(input.charAt(inst_counter), inst_counter);
             if (start == null) start = current;
 
             if (prev != null){
@@ -95,13 +95,12 @@ public class BrainfuckProgram {
             if (current.getType() == Instruction.Type.LOOP_OPEN){
                 loop_stack.push(current);
             } else if (current.getType() == Instruction.Type.LOOP_CLOSE){
-                if (loop_stack.empty()) throw new LoopConsistencyException();
+                if (loop_stack.empty()) throw new LoopConsistencyException(current.getNum());
                 Instruction begin = loop_stack.pop();
                 current.setJump(begin);
                 begin.setJump(current);
             }
 
-            cmds.add(current);
             prev = current;
         }
     }
