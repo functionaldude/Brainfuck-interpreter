@@ -9,14 +9,12 @@ import net.thewalkingthread.brainfuck.payload.Instruction;
 import java.util.*;
 
 public class BrainfuckProgram {
-    private Set<Instruction> cmds;
     private Instruction start;
     private byte[] heap;
     private int heap_ptr;
     private Stack<String> input_stack;
 
     public BrainfuckProgram(String program) throws BrainfuckException {
-        cmds = new TreeSet<>();
         start = null;
         parse(program);
         heap = new byte[100];
@@ -34,7 +32,6 @@ public class BrainfuckProgram {
         Scanner scanner = new Scanner(System.in).useDelimiter("\\s*");
 
         while (iter != null){
-            //System.out.println(iter.num);
             next = iter.getNext();
             switch (iter.getType()){
                 case PLUS:
